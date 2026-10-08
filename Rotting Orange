@@ -1,0 +1,50 @@
+//Solution using BFS
+
+class Solution {
+    int dir[][] = {{-1,0}, {0,1}, {1,0}, {0,-1}};
+    
+    
+    public int orangesRotting(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        
+        int ans = 0;
+        Queue<int []> que = new LinkedList<>();
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j] == 2 ){
+                    que.offer(new int[]{i,j,0});  
+                }
+            }
+        }
+         int dis = 0;
+         while(!que.isEmpty()){
+            int r = que.peek()[0];
+            int c = que.peek()[1];
+            dis = que.peek()[2] + 1;
+            que.remove();
+
+            for(int i=0; i<dir.length; i++){
+                int nr = r + dir[i][0];
+                int nc = c + dir[i][1];
+
+                if(nr >=0 && nr < n && nc >=0 && nc < m && grid[nr][nc] == 1){
+                    grid[nr][nc] = 2;
+                    que.offer(new int[]{nr,nc,dis});
+                }
+            }
+         }
+         for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j] == 1 ){
+                    return -1;
+                }
+            }
+        }
+        if(dis == 0)return 0;
+         return dis-1;
+
+
+    }
+}
